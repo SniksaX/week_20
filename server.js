@@ -4,9 +4,7 @@ const PORT = 3000;
 const app = express();
 
 app.get("/", (req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World');
+    res.send("hello world")
 })
 
 app.listen(PORT, () => {
