@@ -1,4 +1,5 @@
 import { prisma } from "../app.js";
+import {bcrypt} from "bcrypt"
 
 const woodsData = [
   {
@@ -40,6 +41,8 @@ const woodsData = [
 
 async function main() {
 
+  const hash = await bcrypt.hash("test", 10)
+
   const testUser = await prisma.user.upsert({
     where: { email: "siraj.dev@gmail.com" },
     update: {},
@@ -47,7 +50,7 @@ async function main() {
       firstName: "Siraj",
       lastName: "Dev",
       email: "siraj.dev@gmail.com",
-      password: '1234'
+      password: hash 
     },
   });
   console.log(`User created : ${testUser.email}`);

@@ -1,22 +1,25 @@
-import {prisma} from "../../app.js"
+import {prisma} from "../../app.js";
+import bcrypt from "bcrypt";
 
 export const signup = async (req, res) => {
     try {
         const {firstName, lastName, email, password} = req.body
+
+        const hash = await bcrypt.hash(password, 10);
 
         const newUser = await prisma.user.create({
                 data: {
                     firstName,
                     lastName,
                     email,
-                    password
+                    password: hash
                 }
         });
 
         res.status(201).json({message: "User Created: ", data: newUser});
-    } catch {
+    } catch (e){
         res.status(500).json({message: "User not created"})
-        console.error("Error during creation")
+        console.error("Error during creation", e)
     }
 };
 
