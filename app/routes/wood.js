@@ -4,6 +4,6 @@ import * as woodController from '../controllers/wood.js';
 const router = express.Router();
 
 router.get('/', woodController.getAll);
-router.get('/:hardness', woodController.)
+router.get("/:hardness", woodController.getByHardness);
 
 export default router;
