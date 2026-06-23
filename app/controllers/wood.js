@@ -1,4 +1,4 @@
 
-export const woodList = (req, res) => {
+export const getAll = (req, res) => {
     res.send("Wood List")    
 }
