@@ -1,8 +1,8 @@
 import express from 'express';
+import * as woodController from '../controllers/wood.js';
+
 const router = express.Router();
 
-router.get('/', function (req, res) {
-  res.send('List of woods');
-});
+router.get('/', woodController.woodList);
 
 export default router;
