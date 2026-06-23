@@ -9,9 +9,11 @@ dotenv.config();
 export const app = express();
 
 app.use(express.json());
+app.use("/api", router);
+
+
 
 const databaseUrl = new URL(process.env.DATABASE_URL);
-
 const adapter = new PrismaMariaDb({
     host: databaseUrl.hostname,
     port: Number(databaseUrl.port || 3306),
@@ -19,10 +21,7 @@ const adapter = new PrismaMariaDb({
     password: decodeURIComponent(databaseUrl.password),
     database: databaseUrl.pathname.replace("/", ""),
 });
-
 export const prisma = new PrismaClient({ adapter });
-
-app.use("/api", router);
 
 prisma.$connect()
   .then(() => console.log("Database connected..."))
