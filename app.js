@@ -11,8 +11,6 @@ export const app = express();
 app.use(express.json());
 app.use("/api", router);
 
-
-
 const databaseUrl = new URL(process.env.DATABASE_URL);
 const adapter = new PrismaMariaDb({
     host: databaseUrl.hostname,
@@ -21,6 +19,7 @@ const adapter = new PrismaMariaDb({
     password: decodeURIComponent(databaseUrl.password),
     database: databaseUrl.pathname.replace("/", ""),
 });
+
 export const prisma = new PrismaClient({ adapter });
 
 prisma.$connect()
