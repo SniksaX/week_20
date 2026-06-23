@@ -3,6 +3,6 @@ import * as woodController from '../controllers/wood.js';
 
 const router = express.Router();
 
-router.get('/', woodController.woodList);
+router.get('/', woodController.getAll);
 
 export default router;
