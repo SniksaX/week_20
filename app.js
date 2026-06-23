@@ -1,12 +1,14 @@
-
 import { PrismaClient } from "./generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-import express from "express"
+import express from "express";
 import dotenv from 'dotenv';
+import { router } from "./app/routes/index.js";
+
 dotenv.config();
 
-
 export const app = express();
+
+app.use(express.json());
 
 const databaseUrl = new URL(process.env.DATABASE_URL);
 
@@ -20,6 +22,8 @@ const adapter = new PrismaMariaDb({
 
 export const prisma = new PrismaClient({ adapter });
 
+app.use("/api", router);
+
 prisma.$connect()
-.then(() => console.log("Database connected..."))
-.catch((err) => console.log(err));
+  .then(() => console.log("Database connected..."))
+  .catch((err) => console.error("Database connection error:", err));
