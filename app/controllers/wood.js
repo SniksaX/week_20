@@ -34,7 +34,7 @@ export const getByHardness = async (req, res) => {
     }
 };
 
-export const createTree = async (req, res) => {
+export const create = async (req, res) => {
     try {
         const woodData = JSON.parse(req.body.datas);
 

@@ -5,37 +5,37 @@ const woodsData = [
   {
     name: "Épicéa",
     type: "softwood" as const,
-    hardness: "tender" as const,
+    Hardness: "tender" as const,
   },
   {
     name: "Pin",
     type: "softwood" as const,
-    hardness: "medium_hard" as const,
+    Hardness: "medium_hard" as const,
   },
   {
     name: "Padouk",
     type: "exotic_wood" as const,
-    hardness: "hard" as const,
+    Hardness: "hard" as const,
   },
   {
     name: "Érable",
     type: "noble_and_hardwoods" as const,
-    hardness: "medium_hard" as const,
+    Hardness: "medium_hard" as const,
   },
   {
     name: "Hêtre",
     type: "noble_and_hardwoods" as const,
-    hardness: "medium_hard" as const,
+    Hardness: "medium_hard" as const,
   },
   {
     name: "Itauba",
     type: "exotic_wood" as const,
-    hardness: "hard" as const,
+    Hardness: "hard" as const,
   },
   {
     name: "Douglas",
     type: "softwood" as const,
-    hardness: "tender" as const,
+    Hardness: "tender" as const,
   }
 ];
 
@@ -62,7 +62,7 @@ async function main() {
       create: {
         name: wood.name,
         type: wood.type as any, 
-        hardness: wood.hardness as any,
+        hardness: wood.Hardness as any,
       },
     });
     console.log(`Wood Created/Updated : ${wood.name}`);

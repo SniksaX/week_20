@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.get('/', auth, woodController.getAll);
 router.get("/:hardness", auth, woodController.getByHardness);
-router.post('/', auth, multer, woodController.createTree);
+router.post('/', auth, multer, woodController.create);
 
 export default router;
