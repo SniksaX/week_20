@@ -1,8 +1,8 @@
 import { PrismaClient } from "./generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import express from "express";
-import dotenv from 'dotenv';
 import { router } from "./app/routes/index.js";
+import dotenv from 'dotenv';
 
 dotenv.config();
 
