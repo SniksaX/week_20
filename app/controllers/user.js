@@ -1,10 +1,6 @@
 import {prisma} from "../../app.js";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 
 export const signup = async (req, res) => {
     try {
@@ -24,7 +20,7 @@ export const signup = async (req, res) => {
         res.status(201).json({message: "User Created: ", data: newUser});
     } catch (e){
         res.status(500).json({message: e || "Error during creation"})
-        console.error(em)
+        console.error(e)
     }
 };
 
@@ -40,17 +36,20 @@ export const login = async (req, res) => {
             res.status(404).json({message: "User not found"})
         }
 
-        // console.log(process.env.JWT_SECRET)
+        console.log(process.env.JWT_SECRET)
 
         const hash = await bcrypt.compare(password, findUser.password)
+        if (!hash) {
+            res.status(404).json({message: "password wrong"})
+        }
+
         const token = await jwt.sign(
             { 
                 userId: findUser.id, 
                 email: findUser.email 
             },
-            process.env.JWT_SECRET || 'VNtG9bZNwmR28VeCOYuHyNWhlj8pgPrP',
-            { expiresIn: '24h' }
-        )
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' })
 
         return res.status(200).json({message: "connected", user: findUser.firstName, token})
     } catch (e) {
