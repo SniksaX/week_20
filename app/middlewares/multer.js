@@ -12,3 +12,16 @@ const MIME_TYPES = {
 if (!fs.existsSync('uploads')) {
     fs.mkdirSync('uploads');
 }
+
+const storage = multer.diskStorage({ 
+    destination: (req, file, callback) => {
+        callback(null, "uploads");
+    }, 
+    filename: (req, file, callback) => {
+        const name = file.originalname.split('.')[0].replace(/\s+/g, '_');
+        const extension = MIME_TYPES[file.mimetype];
+        callback(null, name + "_" + Date.now() + "." + extension);
+    }
+});
+
+export default multer({ storage: storage }).single("image");

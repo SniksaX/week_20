@@ -10,6 +10,7 @@ export const app = express();
 
 app.use(express.json());
 app.use("/api", router);
+app.use('/uploads', express.static('uploads'));
 
 const databaseUrl = new URL(process.env.DATABASE_URL);
 const adapter = new PrismaMariaDb({

@@ -1,5 +1,5 @@
 import { prisma } from "../app.js";
-import {bcrypt} from "bcrypt"
+import bcrypt from "bcrypt";
 
 const woodsData = [
   {
@@ -40,37 +40,42 @@ const woodsData = [
 ];
 
 async function main() {
+  console.log(`Start seeding ...`);
 
-  const hash = await bcrypt.hash("test", 10)
-
-  const testUser = await prisma.user.upsert({
+  const hash = await bcrypt.hash("password123", 10);
+  await prisma.user.upsert({
     where: { email: "siraj.dev@gmail.com" },
     update: {},
     create: {
       firstName: "Siraj",
       lastName: "Dev",
       email: "siraj.dev@gmail.com",
-      password: hash 
+      password: hash,
     },
   });
-  console.log(`User created : ${testUser.email}`);
+  console.log("User created : siraj.dev@gmail.com");
 
   for (const wood of woodsData) {
-    const createdWood = await prisma.wood.upsert({
+    await prisma.wood.upsert({
       where: { name: wood.name },
       update: {},
-      create: wood,
+      create: {
+        name: wood.name,
+        type: wood.type as any, 
+        hardness: wood.hardness as any,
+      },
     });
-    console.log(`Wood Created/Updated : ${createdWood.name}`);
+    console.log(`Wood Created/Updated : ${wood.name}`);
   }
+
+  console.log(`Seeding finished.`);
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
+  .catch((e) => {
     console.error(e);
-    await prisma.$disconnect();
     process.exit(1);
-});
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -22,26 +17,16 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  firstName String
-  lastName String
-  email String @unique
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 enum WoodType {
-  softwood @map("softwood")
-  exotic_wood @map("exotic wood")
-  noble_and_hardwoods @map("noble and hardwoods")
+  softwood
+  exotic_wood
+  noble_and_hardwoods
 }
 
 enum Hardness {
-  tender @map("tender")
-  medium_hard @map("medium hard")
-  hard @map("hard")
+  tender
+  medium_hard
+  hard
 }
 
 model Wood {
@@ -49,7 +34,7 @@ model Wood {
   name String @unique
   type WoodType
   hardness Hardness
+  image String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-

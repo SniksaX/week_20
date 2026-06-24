@@ -3,16 +3,24 @@ import { prisma } from "../../app.js";
 export const getAll = async (req, res) => {
     try {
         const result = await prisma.wood.findMany();
+
+        if (!result) {
+            res.status(400).json({message: "Wood param not found"})
+        }
+
         res.status(200).json({ result })
     } catch (e) {
         res.status(500).json({ message: e.message || "Error fetching woods" });
-        console.error("Error during fetch:", e);
     }
 };
 
 export const getByHardness = async (req, res) => {
     try {
         const { hardness } = req.params;
+
+        if (!hardness) {
+            res.status(400).json({message: "hardness param not found"})
+        }
 
         const result = await prisma.wood.findMany({
             where: {
@@ -23,6 +31,27 @@ export const getByHardness = async (req, res) => {
         res.status(200).json({ result });
     } catch (e) {
         res.status(500).json({ message: e.message || "Error fetching woods by hardness" });
-        console.error("Error during fetch by hardness:", e);
+    }
+};
+
+export const createTree = async (req, res) => {
+    try {
+        const woodData = JSON.parse(req.body.datas);
+
+        if (!woodData) {
+            res.status(400).json({message: "Param not found"})
+        }
+
+        const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        const result = await prisma.wood.create({
+            data: {
+                ...woodData,
+                image: imageUrl
+            }
+        });
+
+        res.status(201).json({ message: "Wood created", data: result });
+    } catch (e) {
+        res.status(500).json({ message: e.message || "Error creating wood" });
     }
 };
