@@ -36,13 +36,13 @@ export const getByHardness = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
-        const woodData = JSON.parse(req.body.datas);
+        const woodData = req.body.datas ? JSON.parse(req.body.datas) : req.body;
 
-        if (!woodData) {
-            res.status(400).json({message: "Param not found"})
+        let imageUrl = null;
+        if (req.file) {
+            imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
         }
 
-        const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
         const result = await prisma.wood.create({
             data: {
                 ...woodData,

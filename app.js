@@ -3,11 +3,13 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import express from "express";
 import { router } from "./app/routes/index.js";
 import dotenv from 'dotenv';
+import cors from "cors"
 
 dotenv.config();
 
 export const app = express();
 
+app.use(cors({origin:"http://localhost:8080"}));
 app.use(express.json());
 app.use("/api", router);
 app.use('/uploads', express.static('uploads'));
