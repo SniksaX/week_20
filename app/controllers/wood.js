@@ -1,5 +1,26 @@
 import { prisma } from "../../app.js";
 
+const addLinks = (wood, req) => {
+    const baseUrl = `${req.protocol}://${req.get("host")}/api/woods`;
+    
+    return {
+        ...wood,
+        links: [
+            { 
+                rel: "self", 
+                method: "GET", 
+                href: `${baseUrl}/${wood.id}` 
+            },
+            { 
+                rel: "sameHardness", 
+                method: "GET", 
+                href: `${baseUrl}/${wood.hardness}` 
+            }
+        ]
+    };
+};
+
+
 export const getAll = async (req, res) => {
     try {
         const result = await prisma.wood.findMany();
@@ -8,7 +29,9 @@ export const getAll = async (req, res) => {
             res.status(400).json({message: "Wood param not found"})
         }
 
-        res.status(200).json({ result })
+        const woodsWithLinks = result.map(wood => addLinks(wood, req));
+
+        res.status(200).json({ result:  woodsWithLinks})
     } catch (e) {
         res.status(500).json({ message: e.message || "Error fetching woods" });
     }
@@ -28,7 +51,9 @@ export const getByHardness = async (req, res) => {
             }
         });
 
-        res.status(200).json({ result });
+        const woodsWithLinks = result.map(wood => addLinks(wood, req));
+
+        res.status(200).json({ result: woodsWithLinks });
     } catch (e) {
         res.status(500).json({ message: e.message || "Error fetching woods by hardness" });
     }
@@ -50,7 +75,10 @@ export const create = async (req, res) => {
             }
         });
 
-        res.status(201).json({ message: "Wood created", data: result });
+        const woodWithLinks = addLinks(result, req);
+
+
+        res.status(201).json({ message: "Wood created", data: woodWithLinks });
     } catch (e) {
         res.status(500).json({ message: e.message || "Error creating wood" });
     }
