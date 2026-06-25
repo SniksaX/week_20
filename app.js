@@ -4,15 +4,19 @@ import express from "express";
 import { router } from "./app/routes/index.js";
 import dotenv from 'dotenv';
 import cors from "cors"
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from "./swagger.json"
 
 dotenv.config();
 
 export const app = express();
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(cors({origin:"http://localhost:8080"}));
 app.use(express.json());
 app.use("/api", router);
 app.use('/uploads', express.static('uploads'));
+
 
 const databaseUrl = new URL(process.env.DATABASE_URL);
 const adapter = new PrismaMariaDb({
